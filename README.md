@@ -12,6 +12,8 @@ Busch-Jaeger free@home API to control actuators.
 
 [![NPM](https://nodei.co/npm/freeathome-api.png?compact=true)](https://npmjs.org/package/freeathome-api)
 
+> **Note on this fork:** This fork adds a fix for a startup crash (`TypeError: Cannot read properties of undefined (reading 'name')` in `XmlParser`) that occurs when a device/channel is assigned to the special default floor `FD` or to a floor that no longer exists — see the `fix/unassigned-floor-crash` branch and `CHANGELOG.md`. This fix was developed with [Claude](https://claude.com/claude-code) (Anthropic).
+
 # Description
 This API exposes a websocket and HTTP API which can be used to receive and set state changes of free@home actuators. It
 can be used as a library as well in other applications. 
