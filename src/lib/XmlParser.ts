@@ -125,11 +125,19 @@ export class XmlParser {
                         functionId = device.getChildren('attribute').find(attr => attr.getAttr('name') == 'functionId')
                     }
 
+                    // Resolve floor/room defensively: a channel may reference a floor uid
+                    // that is not present in floorData (e.g. the special "FD" default floor,
+                    // which is skipped above, or a deleted floor). Reading .name directly in
+                    // that case throws "Cannot read properties of undefined (reading 'name')"
+                    // and crashes the whole API on startup. Fall back to "" instead.
+                    const floor = floorId ? floorData[floorId.getText()] : undefined
+                    const room = floor && roomId ? floor.rooms[roomId.getText()] : undefined
+
                     parsed[serialNo]['channels'][channelName] = {
                         datapoints: {},
                         "displayName": displayName ? displayName.getText() : "",
-                        "floor": floorId ? floorData[floorId.getText()].name : "",
-                        "room": floorId && roomId ? floorData[floorId.getText()].rooms[roomId.getText()].name : "",
+                        "floor": floor ? floor.name : "",
+                        "room": room ? room.name : "",
                         "iconId": icon ? icon.getText() : "",
                         "functionId": functionId ? functionId.getText() : ""
                     }

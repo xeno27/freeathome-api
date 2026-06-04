@@ -1,5 +1,9 @@
 # Changelog
 
+### Unreleased
+
+* **Bug Fix:** Fixes a startup crash (`TypeError: Cannot read properties of undefined (reading 'name')` in `XmlParser.parseDeviceData`) that occurred when a channel references a floor uid that is not present in the floorplan data — e.g. the special `FD` "default floor" (which is skipped while building `floorData`) or a deleted floor. Floor/room are now resolved defensively and fall back to an empty string instead of crashing the whole API.
+
 ### 1.1.3 (2023-01-30)
 
 * **Bug Fix:** Fixes a possible crash when a device is assigned to a floor but placed outside any room (#45).
